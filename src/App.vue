@@ -78,7 +78,9 @@ export default {
       console.log(this.isSelected);
     },
     addItem(id, items) {
-        items.push({ list: id, color: "Orange" })
+        if (this.items[id].length < 6) {
+          items.push({ list: id, color: "Orange" })
+        }
     },
     deleteItem(items, item) {
       items.splice(items.indexOf(item), 1);
@@ -95,11 +97,11 @@ export default {
       this.items[this.isSelected.list].push(ref)
     },
     moveItem() {
-      if (this.isSelected.list == 0) {
+      if (this.isSelected.list == 0 && this.items[1].length < 6) {
         this.isSelected.list = 1;
         this.items[1].push(this.isSelected);
         this.items[0].splice(this.items[0].indexOf(this.isSelected), 1);
-      } else {
+      } else if (this.items[0].length < 6) {
         this.isSelected.list = 0;
         this.items[0].push(this.isSelected);
         this.items[1].splice(this.items[1].indexOf(this.isSelected), 1);
