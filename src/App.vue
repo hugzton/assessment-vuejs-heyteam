@@ -1,17 +1,55 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <ul>   
+      <div 
+          v-for="item in items[0]" 
+          v-bind:key="item.index"
+          :style="handleColor(item)"
+        >
+        <input v-model="item.color" />
+        <button>X</button>
+      </div>  
+      <button>+</button>
+    </ul>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
 
 export default {
   name: 'App',
-  components: {
-    HelloWorld
+  data() {
+    return {
+      isSelected: null,
+      items: [
+        [
+          {
+            list: 0,
+            color: "Orange"
+          },
+          {
+            list: 0,
+            color: "Blue"
+          },
+        ],
+        [
+          {
+            list: 1,
+            color: "Orange"
+          },
+          {
+            list: 1,
+            color: "Blue"
+          },
+        ]
+      ]
+    }
+  },
+
+  methods: {
+    handleColor (item) {
+      return "background-color: " + item.color
+    }
   }
 }
 </script>
