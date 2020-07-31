@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <ul>
-      <div class="column">
+      <div class="list">
         <div
             class="card"
             v-for="item in items[0]" 
@@ -12,11 +12,18 @@
           <input style=" width: 25%;" v-model="item.color" />
           <button class="btn-card-delete" v-on:click="deleteItem(items[0], item)">X</button>
         </div>  
-        <button class="btn-card-add" v-on:click="addItem(0, items[0])">+</button>
+        <button class="btn-list-add" v-on:click="addItem(0, items[0])">+</button>
       </div>
     </ul>
+    <div class="column">
+      <button v-on:click="moveItem()">MOVE</button>
+      <button v-on:click="deleteSelectItem()">DELETE</button>
+      <button v-on:click="copyItem()">COPY</button>
+      <button v-on:click="refItem()">REFERENCE</button>
+      
+    </div>
     <ul>
-      <div class="column">   
+      <div class="list">
         <div 
             class="card"
             v-for="item in items[1]" 
@@ -27,13 +34,9 @@
           <input style=" width: 25%;" v-model="item.color" />
           <button class="btn-card-delete" v-on:click="deleteItem(items[1], item)">X</button>
         </div>  
-        <button class="btn-card-add" v-on:click="addItem(1, items[1])">+</button>
+        <button class="btn-list-add" v-on:click="addItem(1, items[1])">+</button>
       </div>
     </ul>
-    <button v-on:click="moveItem()">MOVE</button>
-    <button v-on:click="copyItem()">COPY</button>
-    <button v-on:click="refItem()">REFERENCE</button>
-    <button v-on:click="deleteSelectItem()">DELETE</button>
   </div>
 </template>
 
@@ -73,7 +76,7 @@ export default {
     handleColor (item) {
       let overlay = "";
       if (item == this.isSelected) {
-        overlay = "border: 2px solid grey;"
+        overlay = "border: 2px solid WhiteSmoke;"
       }
       return overlay + "background-color: " + item.color
     },
@@ -104,7 +107,7 @@ export default {
       }
     },
     refItem(){
-      if (this.isSelected != null) {
+      if (this.isSelected != null && this.items[this.isSelected.list].length < 6) {
         let ref = this.isSelected
         this.items[this.isSelected.list].push(ref)
       }
@@ -128,14 +131,15 @@ export default {
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  margin-top: 100px;
 }
 
 .list {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: left;
+  padding: 0;
+  margin: 0;
   border: 1px solid black;
   background-color: grey;
 }
@@ -146,7 +150,7 @@ export default {
   z-index :1;
 }
 
-.btn-card-add {
+.btn-list-add {
   top:0; 
   right:0;
   z-index :1;
@@ -157,16 +161,23 @@ export default {
 }
 
 .card {
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  padding: 16px;
+  padding: 5px;
+  width: 200px;
+  height: 150px;
+  margin: 10px;
+  line-height: 150px;
+  color: white;
+  font-weight: bold;
+  font-size: 3em;
   text-align: center;
 }
 
 /* Float four columns side by side */
 .column {
-  float: left;
-  width: 25%;
-  padding: 0 10px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  background: grey;
 }
 
 </style>
