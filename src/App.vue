@@ -33,7 +33,7 @@
     <button v-on:click="moveItem()">MOVE</button>
     <button v-on:click="copyItem()">COPY</button>
     <button v-on:click="refItem()">REFERENCE</button>
-    <button>DELETE</button>
+    <button v-on:click="deleteSelectItem()">DELETE</button>
   </div>
 </template>
 
@@ -75,7 +75,6 @@ export default {
     },
     handleSelect (item) {
       this.isSelected = item
-      console.log(this.isSelected);
     },
     addItem(id, items) {
         if (this.items[id].length < 6) {
@@ -84,6 +83,10 @@ export default {
     },
     deleteItem(items, item) {
       items.splice(items.indexOf(item), 1);
+    },
+    deleteSelectItem() {
+      this.items[this.isSelected.list].splice(this.items[this.isSelected.list].indexOf(this.isSelected), 1);
+      this.isSelected = null
     },
     copyItem() {
       this.items[this.isSelected.list].push({
