@@ -10,7 +10,7 @@
             v-on:click="handleSelect(item)"
           >
           <input style=" width: 25%;" v-model="item.color" />
-          <button class="btn-card-delete">X</button>
+          <button class="btn-card-delete" v-on:click="deleteItem(items[0], item)">X</button>
         </div>  
         <button class="btn-card-add" v-on:click="addItem(0, items[0])">+</button>
       </div>
@@ -25,13 +25,17 @@
             v-on:click="handleSelect(item)"
           >
           <input style=" width: 25%;" v-model="item.color" />
-          <button class="btn-card-delete">X</button>
+          <button class="btn-card-delete" v-on:click="deleteItem(items[1], item)">X</button>
         </div>  
         <button class="btn-card-add" v-on:click="addItem(1, items[1])">+</button>
       </div>
     </ul>
+    <button v-on:click="moveItem()">MOVE</button>
+    <button v-on:click="copyItem()">COPY</button>
+    <button v-on:click="refItem()">REFERENCE</button>
+    <button>DELETE</button>
   </div>
-</template>okokok
+</template>
 
 <script>
 
@@ -64,7 +68,7 @@ export default {
       ]
     }
   },
-
+  
   methods: {
     handleColor (item) {
       return "background-color: " + item.color
@@ -76,6 +80,32 @@ export default {
     addItem(id, items) {
         items.push({ list: id, color: "Orange" })
     },
+    deleteItem(items, item) {
+      items.splice(items.indexOf(item), 1);
+    },
+    copyItem() {
+      this.items[this.isSelected.list].push({
+        list: this.isSelected.list,
+        color: this.isSelected.color
+      })
+      this.isSelected = null
+    },
+    refItem(){
+      let ref = this.isSelected
+      this.items[this.isSelected.list].push(ref)
+    },
+    moveItem() {
+      if (this.isSelected.list == 0) {
+        this.isSelected.list = 1;
+        this.items[1].push(this.isSelected);
+        this.items[0].splice(this.items[0].indexOf(this.isSelected), 1);
+      } else {
+        this.isSelected.list = 0;
+        this.items[0].push(this.isSelected);
+        this.items[1].splice(this.items[1].indexOf(this.isSelected), 1);
+      }
+      this.isSelected = null
+    }
   }
 }
 </script>
@@ -113,7 +143,6 @@ export default {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   padding: 16px;
   text-align: center;
-  background-color: #f1f1f1;
 }
 
 /* Float four columns side by side */
