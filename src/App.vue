@@ -71,7 +71,11 @@ export default {
   
   methods: {
     handleColor (item) {
-      return "background-color: " + item.color
+      let overlay = "";
+      if (item == this.isSelected) {
+        overlay = "border: 2px solid grey;"
+      }
+      return overlay + "background-color: " + item.color
     },
     handleSelect (item) {
       this.isSelected = item
@@ -85,26 +89,32 @@ export default {
       items.splice(items.indexOf(item), 1);
     },
     deleteSelectItem() {
-      this.items[this.isSelected.list].splice(this.items[this.isSelected.list].indexOf(this.isSelected), 1);
-      this.isSelected = null
+      if (this.isSelected != null) {
+        this.items[this.isSelected.list].splice(this.items[this.isSelected.list].indexOf(this.isSelected), 1);
+        this.isSelected = null
+      }
     },
     copyItem() {
-      this.items[this.isSelected.list].push({
-        list: this.isSelected.list,
-        color: this.isSelected.color
-      })
-      this.isSelected = null
+      if (this.isSelected != null){
+        this.items[this.isSelected.list].push({
+          list: this.isSelected.list,
+          color: this.isSelected.color
+        })
+        this.isSelected = null
+      }
     },
     refItem(){
-      let ref = this.isSelected
-      this.items[this.isSelected.list].push(ref)
+      if (this.isSelected != null) {
+        let ref = this.isSelected
+        this.items[this.isSelected.list].push(ref)
+      }
     },
     moveItem() {
-      if (this.isSelected.list == 0 && this.items[1].length < 6) {
+      if (this.isSelected != null && this.isSelected.list == 0 && this.items[1].length < 6) {
         this.isSelected.list = 1;
         this.items[1].push(this.isSelected);
         this.items[0].splice(this.items[0].indexOf(this.isSelected), 1);
-      } else if (this.items[0].length < 6) {
+      } else if (this.isSelected != null && this.items[0].length < 6 ) {
         this.isSelected.list = 0;
         this.items[0].push(this.isSelected);
         this.items[1].splice(this.items[1].indexOf(this.isSelected), 1);
@@ -127,7 +137,9 @@ export default {
 
 .list {
   border: 1px solid black;
+  background-color: grey;
 }
+
 .btn-card-delete {
   top:0; 
   right:0;
